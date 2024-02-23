@@ -11,11 +11,6 @@ const listElem = document.getElementById('list');
 const errorMsg = document.getElementById('error-msg');
 const form = document.getElementsByTagName('form')[0];
 
-
-function updateCounter() {
-  document.getElementById('count').innerText = notes.length;
-}
-
 function addNoteToModel() {
   // ajouter la nouvelle note dans
   notes.push(inputElem.value);
@@ -72,7 +67,6 @@ form.addEventListener('submit', async function (event) {
     const newNote = new Note(null, inputElem.value);
     await NoteManager.create(newNote);
     await refreshNotes();
-    // updateCounter();
     resetInput();
   }
 });
@@ -85,15 +79,14 @@ async function refreshNotes() {
   // while (listElem.children ) listElem.removeChild();
   listElem.innerText = '';
   noteElement.forEach(noteElem => listElem.appendChild(noteElem));
+  document.getElementById('count').innerText = notes.length;
 };
 
-listElem.addEventListener('click', function (event){
+listElem.addEventListener('click', function (event) {
   const id = +event.target.getAttribute("data-id");
-  if ( !isNaN(id)){
+  if (!isNaN(id)) {
     NoteManager.remove(id);
   };
 });
 
 refreshNotes();
-
-
