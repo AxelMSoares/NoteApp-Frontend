@@ -74,11 +74,11 @@ form.addEventListener('submit', async function (event) {
 
 searchElem.addEventListener('change', function (event) {
 
-    const searchResult = notes.filter(item => item.text.toLowerCase().includes(searchElem.value.toLowerCase()));
-    listElem.innerText = '';
-    let resultElem = searchResult.map(note => NoteElement.create(note));
-    resultElem.forEach(result => listElem.appendChild(result));
-    document.getElementById('count').innerText = searchResult.length;
+  const searchResult = notes.filter(item => item.text.toLowerCase().includes(searchElem.value.toLowerCase()));
+  listElem.innerText = '';
+  let resultElem = searchResult.map(note => NoteElement.create(note));
+  resultElem.forEach(result => listElem.appendChild(result));
+  document.getElementById('count').innerText = searchResult.length;
 
 });
 
@@ -93,11 +93,21 @@ async function refreshNotes() {
   document.getElementById('count').innerText = notes.length;
 };
 
-listElem.addEventListener('click', function (event) {
-  const id = +event.target.getAttribute("data-id");
-  if (!isNaN(id)) {
-    NoteManager.remove(id);
-  };
+listElem.addEventListener('click', async function (event) {
+  const id = +event.target.getAttribute("delete-id");
+  if (!isNaN(id) && id !== 0) {
+    await NoteManager.remove(id);
+    await refreshNotes();
+  }
+});
+
+listElem.addEventListener('click', async function (event) {
+  const updateId = +event.target.getAttribute("update-id");
+  if (!isNaN(updateId) && updateId !== 0) {
+    const newText = prompt("Saisir le nouveau text");
+    await NoteManager.update(newText, updateId);
+    await refreshNotes();
+  }
 });
 
 refreshNotes();

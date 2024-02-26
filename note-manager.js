@@ -27,14 +27,14 @@ export class NoteManager {
         });
     }
 
-    static async update(id, note) {
-        console.log('Update for note: ', note);
+    static async update(text, id) {
+        console.log('Update for note: ', id);
         const response = await fetch('http://localhost:3000/notes/' + id, {
             method: "PUT",
             headers: {
                 "Content-type": "application/json"
             },
-            body: JSON.stringify(note)
+            body: JSON.stringify({ text: text, id: id })
         });
     }
 }
