@@ -10,6 +10,7 @@ const inputElem = document.getElementById('my-input');
 const listElem = document.getElementById('list');
 const errorMsg = document.getElementById('error-msg');
 const form = document.getElementsByTagName('form')[0];
+const searchElem = document.getElementById('search');
 
 function addNoteToModel() {
   // ajouter la nouvelle note dans
@@ -69,6 +70,16 @@ form.addEventListener('submit', async function (event) {
     await refreshNotes();
     resetInput();
   }
+});
+
+searchElem.addEventListener('change', function (event) {
+
+    const searchResult = notes.filter(item => item.text.toLowerCase().includes(searchElem.value.toLowerCase()));
+    listElem.innerText = '';
+    let resultElem = searchResult.map(note => NoteElement.create(note));
+    resultElem.forEach(result => listElem.appendChild(result));
+    document.getElementById('count').innerText = searchResult.length;
+
 });
 
 document.querySelector('#error-msg span').innerText = minChars;
